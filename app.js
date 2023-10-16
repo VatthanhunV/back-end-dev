@@ -5,7 +5,7 @@ import morgan from "morgan";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import CORS from 'cors'
+import cors from 'cors'
 dotenv.config();
 const router = express.Router();
 
