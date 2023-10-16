@@ -5,6 +5,7 @@ import morgan from "morgan";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import CORS from 'cors'
 dotenv.config();
 const router = express.Router();
 
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 
 //MIDDLEWARE
 app.use(morgan("dev"));
+app.use(cors())
 
 // routes
 
