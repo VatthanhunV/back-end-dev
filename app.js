@@ -5,7 +5,7 @@ import morgan from "morgan";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import cors from 'cors'
+import cors from "cors";
 dotenv.config();
 const router = express.Router();
 
@@ -24,11 +24,15 @@ const userSchema = new mongoose.Schema(
   {
     userEmail: { type: String, required: true },
     userPassword: { type: String, required: true },
-    userBiologicalGender: { type: Boolean, required: false },
-    userBD: { type: Date, required: false },
+    userBiologicalGender: { type: String, required: false },
+    userBD: { type: String, required: false },
     userWeight: { type: Number, required: false },
     userHeight: { type: Number, required: false },
-    userActivities: {type: Array, required: false},
+    // userBiologicalGender: { type: Boolean, required: false },
+    // userBD: { type: Date, required: false },
+    // userWeight: { type: Number, required: false },
+    // userHeight: { type: Number, required: false },
+    userActivities: { type: Array, required: false },
   },
   { timestamps: true }
 );
@@ -63,7 +67,7 @@ app.use((req, res, next) => {
 
 //MIDDLEWARE
 app.use(morgan("dev"));
-app.use(cors())
+app.use(cors());
 
 // routes
 
@@ -81,7 +85,7 @@ app.get("/activities/", async (req, res) => {
 // Get one activity
 app.get("/activities/:id", async (req, res) => {
   try {
-    const activity = await Activities.findOne({_id:req.params.id});
+    const activity = await Activities.findOne({ _id: req.params.id });
     res.json(activities);
   } catch (error) {
     console.error(error);
@@ -172,25 +176,25 @@ function validateActivity(req, res, next) {
 }
 //Users
 // @endpoint http://localhost:3000/users
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
   try {
-    const users = await Users.find({}).select("-userPassword")
+    const users = await Users.find({}).select("-userPassword");
     res.json(users);
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 
 // auth
 // @endpoint http://localhost:3000/users
 // register
-app.post('/register', async (req, res) => {
+app.post("/register", async (req, res) => {
   try {
     // Check user
-    const newUser = new Users(req.body)
-    console.log(newUser)
-    let user = await Users.findOne({ userEmail:newUser.userEmail });
+    const newUser = new Users(req.body);
+    console.log(newUser);
+    let user = await Users.findOne({ userEmail: newUser.userEmail });
     if (user) {
       return res.status(400).send("User Already Exists");
     }
@@ -203,16 +207,22 @@ app.post('/register', async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 //login
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
-    const userObj = new Users(req.body)
-    console.log(userObj)
-    const user = await Users.findOneAndUpdate({ userEmail:userObj.userEmail }, { new: true });
+    const userObj = new Users(req.body);
+    console.log(userObj);
+    const user = await Users.findOneAndUpdate(
+      { userEmail: userObj.userEmail },
+      { new: true }
+    );
     if (user && user.enabled) {
       //check password
-      const isMatch = await bcrypt.compare(userObj.userPassword, user.userPassword);
+      const isMatch = await bcrypt.compare(
+        userObj.userPassword,
+        user.userPassword
+      );
       if (!isMatch) {
         return res.status(400).send("Password Invalid");
       }
@@ -237,30 +247,30 @@ app.post('/login', async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 // get current user
-app.get('/users/:id', async (req, res) => {
+app.get("/users/:id", async (req, res) => {
   try {
-    const user = await Users.findOne({_id:req.params.id})
-      .select("-userPassword")
-      if (user && user.enabled) {
-        res.send(user);
-      } else {
-        res.status(400).send('User not found!!')
-      }
+    const user = await Users.findOne({ _id: req.params.id }).select(
+      "-userPassword"
+    );
+    if (user && user.enabled) {
+      res.send(user);
+    } else {
+      res.status(400).send("User not found!!");
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 
 // editUser
- app.put('/users/:id', async (req, res) => {
+app.put("/users/:id", async (req, res) => {
   try {
-    const updatedUser = await Users.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true });
+    const updatedUser = await Users.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!updatedUser) {
       res.status(404).json({ message: "Activity not found" });
     } else {
@@ -270,10 +280,10 @@ app.get('/users/:id', async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 
 //deleteUser
- app.delete('/users/:id', async (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   try {
     const deletedUser = await Users.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
@@ -285,7 +295,7 @@ app.get('/users/:id', async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error!");
   }
-})
+});
 
 // Start server
 app.listen(port, () => {
