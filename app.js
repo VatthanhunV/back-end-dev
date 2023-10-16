@@ -28,8 +28,6 @@ const userSchema = new mongoose.Schema(
     userWeight: { type: Number, required: false },
     userHeight: { type: Number, required: false },
     userActivities: {type: Array, required: false},
-    role: { type: String, default: "user" },
-    enabled: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
