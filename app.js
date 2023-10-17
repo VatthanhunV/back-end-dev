@@ -252,6 +252,7 @@ app.get("/users/:id", async (req, res) => {
     const user = await Users.findOne({ _id: req.params.id }).select(
       "-userPassword"
     );
+    console.log(user)
     if (user) {
       res.send(user);
     } else {
