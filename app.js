@@ -215,7 +215,7 @@ app.post("/login", async (req, res) => {
       { userEmail: userObj.userEmail },
       { new: true }
     );
-    if (user && user.enabled) {
+    if (user) {
       //check password
       const isMatch = await bcrypt.compare(
         userObj.userPassword,
