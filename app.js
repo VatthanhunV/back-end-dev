@@ -252,7 +252,7 @@ app.get("/users/:id", async (req, res) => {
     const user = await Users.findOne({ _id: req.params.id }).select(
       "-userPassword"
     );
-    if (user && user.enabled) {
+    if (user) {
       res.send(user);
     } else {
       res.status(400).send("User not found!!");
