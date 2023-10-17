@@ -227,8 +227,8 @@ app.post("/login", async (req, res) => {
       // payload
       const payload = {
         user: {
-          username: user.username,
-          role: user.role,
+          userEmail: user.userEmail,
+          // role: user.role,
         },
       };
       // generate token
