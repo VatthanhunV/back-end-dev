@@ -225,12 +225,12 @@ app.post("/login", async (req, res) => {
         return res.status(400).send("Password Invalid");
       }
       // payload
-      // const payload = {
-      //   user: {
-      //     username: user.username,
-      //     role: user.role,
-      //   },
-      // };
+      const payload = {
+        user: {
+          username: user.username,
+          role: user.role,
+        },
+      };
       // generate token
       jwt.sign(payload, "jwtSecret", { expiresIn: 3600 }, (err, token) => {
         if (err) throw err;
