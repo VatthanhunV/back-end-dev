@@ -249,7 +249,7 @@ app.post("/login", async (req, res) => {
 // get current user
 app.get("/users/:id", async (req, res) => {
   try {
-    const user = await Users.findOne({ _id: req.params.id }).select(
+    const user = await Users.findOne({ _id: req.params.userID }).select(
       "-userPassword"
     );
     console.log(user)
@@ -298,5 +298,5 @@ app.delete("/users/:id", async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on https://infinityfitbackenddev.onrender.com`);
 });
