@@ -249,14 +249,14 @@ app.post("/login", async (req, res) => {
 // get current user
 app.get("/users/:id", async (req, res) => {
   try {
-    const user = await Users.findOne({ _id: req.params.userID }).select(
+    const user = await Users.findOne({ _id: req.params.id }).select(
       "-userPassword"
     );
     console.log(user)
     if (user) {
       res.send(user);
     } else {
-      res.status(400).send("User not found!!");
+      res.status(400).send("User not found!!", req);
     }
   } catch (err) {
     console.log(err);
