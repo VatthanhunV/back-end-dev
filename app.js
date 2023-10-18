@@ -228,7 +228,7 @@ app.post("/login", async (req, res) => {
       const payload = {
         user: {
           userEmail: user.userEmail,
-          userID: user._id
+          userID: user._id,
         },
       };
       // generate token
@@ -236,8 +236,6 @@ app.post("/login", async (req, res) => {
         if (err) throw err;
         res.json({ token, payload, userObj });
       });
-      // console.log(isMatch)
-      // res.send('Hello login')
     } else {
       return res.status(400).send("User not found!!");
     }
@@ -252,7 +250,7 @@ app.get("/users/:id", async (req, res) => {
     const user = await Users.findOne({ _id: req.params.id }).select(
       "-userPassword"
     );
-    console.log(user)
+    console.log(user);
     if (user) {
       res.send(user);
     } else {
@@ -298,5 +296,7 @@ app.delete("/users/:id", async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server is running on https://infinityfitbackenddev.onrender.com`);
+  console.log(
+    `Server is running on https://infinityfitbackenddev.onrender.com`
+  );
 });
